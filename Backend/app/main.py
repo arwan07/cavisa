@@ -13,12 +13,15 @@ Menyediakan:
 from __future__ import annotations
 
 import logging
+import os
 from contextlib import asynccontextmanager
-from typing import AsyncIterator, Dict, List, Optional, Tuple
+from pathlib import Path
+from typing import Any, AsyncIterator, Dict, List, Optional, Tuple, Union
 
 from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
 from app.schemas.prediction import (
@@ -91,6 +94,20 @@ app.add_middleware(
 )
 
 
+# Direktori Frontend untuk penyajian antarmuka web dan aset statis
+FRONTEND_DIR = Path(
+    os.getenv("FRONTEND_DIR")
+    or (Path(__file__).resolve().parent.parent.parent / "Frontend")
+)
+if not FRONTEND_DIR.is_dir():
+    alt_frontend = Path(__file__).resolve().parent.parent / "Frontend"
+    if alt_frontend.is_dir():
+        FRONTEND_DIR = alt_frontend
+
+if (FRONTEND_DIR / "assets").is_dir():
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIR / "assets")), name="assets")
+
+
 # ---------------------------------------------------------------------------
 # Handler galat terpusat
 # ---------------------------------------------------------------------------
@@ -103,10 +120,40 @@ async def handler_app_error(request: Request, exc: AppError) -> JSONResponse:
 
 
 # ---------------------------------------------------------------------------
-# Endpoint Informasi & Kesehatan
+# Endpoint Informasi & Antarmuka Pengguna (Frontend)
 # ---------------------------------------------------------------------------
-@app.get("/", tags=["info"], summary="Informasi singkat service")
-async def root() -> Dict[str, object]:
+@app.get("/admin", tags=["frontend"], summary="Halaman Admin CAVISA")
+@app.get("/admin.html", tags=["frontend"], include_in_schema=False)
+async def admin_page() -> FileResponse:
+    admin_file = FRONTEND_DIR / "admin.html"
+    if admin_file.is_file():
+        return FileResponse(str(admin_file))
+    raise HTTPException(status_code=404, detail="Halaman admin tidak ditemukan")
+
+
+@app.get("/admin/", include_in_schema=False)
+async def admin_slash_redirect() -> RedirectResponse:
+    return RedirectResponse(url="/admin")
+
+
+@app.get("/index.html", tags=["frontend"], include_in_schema=False)
+async def index_page() -> FileResponse:
+    index_file = FRONTEND_DIR / "index.html"
+    if index_file.is_file():
+        return FileResponse(str(index_file))
+    raise HTTPException(status_code=404, detail="Halaman utama tidak ditemukan")
+
+
+@app.get("/", tags=["info"], summary="Informasi singkat service atau Web UI")
+async def root(request: Request) -> Any:
+    accept = request.headers.get("accept", "")
+    index_file = FRONTEND_DIR / "index.html"
+
+    # Jika browser meminta halaman HTML dan file index.html tersedia, tampilkan UI
+    if "text/html" in accept and index_file.is_file():
+        return FileResponse(str(index_file))
+
+    # Klien API / test client / curl menerima JSON ringkasan service
     return {
         "service": settings.app_name,
         "version": settings.version,

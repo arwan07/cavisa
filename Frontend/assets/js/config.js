@@ -21,14 +21,17 @@
 
 window.CAVISA_CONFIG = {
 
-  /* --- Koneksi backend ---------------------------------------------- */
-  // Alamat URL backend FastAPI:
-  // - Pengujian lokal (port 8001): otomatis ke "http://localhost:8000"
-  // - Server produksi dengan Nginx Reverse Proxy: otomatis ke window.location.origin (port 80/443)
-  // - Server terpisah: ubah manual ke "http://IP_SERVER:8000" atau "https://api.domainanda.com"
-  apiBase: (typeof window !== "undefined" && (window.location.port === "8001" || window.location.hostname === "localhost"))
-    ? "http://localhost:8000"
-    : ((typeof window !== "undefined" && window.location.origin && window.location.origin !== "null") ? window.location.origin : "http://localhost:8000"),
+  apiBase: (function() {
+    if (typeof window === "undefined" || !window.location.origin || window.location.origin === "null") {
+      return "http://localhost:8000";
+    }
+    // Jika frontend dibuka dari web server terpisah untuk dev lokal (misal port 8001 / 5500 / 3000)
+    if (window.location.hostname === "localhost" && (window.location.port === "8001" || window.location.port === "5500" || window.location.port === "3000")) {
+      return "http://localhost:8000";
+    }
+    // Disajikan langsung oleh Backend (Railway, cloud host, atau localhost port sama)
+    return window.location.origin;
+  })(),
 
   batasWaktuMs: 30000,   // abort bila server tidak merespons (30 detik)
 

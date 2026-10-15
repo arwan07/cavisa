@@ -93,9 +93,25 @@ Akses antarmuka melalui peramban:
 
 ## Panduan Deployment ke Server Produksi (Production Deployment)
 
-Tersedia dua opsi deployment ke server (VPS Linux seperti Ubuntu/Debian atau Cloud Server):
+Tersedia tiga opsi deployment ke server:
 
-### OPSI A: Menggunakan Docker Compose (Paling Cepat & Mudah)
+### OPSI A: Cloud PaaS Otomatis (Railway / Render) — 1-Click Deploy
+
+Repositori ini sudah dilengkapi **Root `Dockerfile`** dan konfigurasi `railway.json` terpadu (*Unified Fullstack Container*), sehingga Frontend UI dan Backend FastAPI berjalan bersamaan dalam satu layanan cloud tanpa perlu konfigurasi tambahan.
+
+1. Buka [Railway.app](https://railway.app/) dan buat **New Project**.
+2. Pilih **Deploy from GitHub repo** dan pilih repositori `cavisa` (atau `arwan07/cavisa`).
+3. Railway akan otomatis mendeteksi `Dockerfile` di root, memasang dependensi Python, memuat model, dan menjalankan server.
+4. Buka tab **Settings** di Railway Service Anda:
+   * Pada bagian **Networking**, klik **Generate Domain** (contoh: `https://cavisa-production.up.railway.app`).
+5. **Selesai!** Aplikasi dapat langsung diakses publik dengan HTTPS otomatis:
+   * **Web UI Pengguna:** `https://cavisa-production.up.railway.app/`
+   * **Admin Panel:** `https://cavisa-production.up.railway.app/admin`
+   * **Dokumentasi API:** `https://cavisa-production.up.railway.app/docs`
+
+---
+
+### OPSI B: Menggunakan Docker Compose (Server VPS Mandiri)
 
 Proyek ini telah dilengkapi konfigurasi `docker-compose.yml` siap pakai yang mencakup kontainer backend FastAPI dan kontainer frontend Nginx Alpine.
 
@@ -127,7 +143,7 @@ docker compose down
 
 ---
 
-### OPSI B: Menggunakan Linux VPS Standalone (Systemd + Nginx + Let's Encrypt SSL)
+### OPSI C: Menggunakan Linux VPS Standalone (Systemd + Nginx + Let's Encrypt SSL)
 
 Opsi ini memberikan performa terbaik, kendali penuh terhadap sistem, dan integrasi sertifikat HTTPS resmi.
 

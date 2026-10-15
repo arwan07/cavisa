@@ -275,6 +275,22 @@ def test_root(client, stub):
     assert body["model_loaded"] is True
 
 
+def test_frontend_pages(client, stub):
+    # Akses browser ke root menyajikan HTML
+    r_html = client.get("/", headers={"Accept": "text/html"})
+    assert r_html.status_code == 200
+    assert "CAVISA" in r_html.text
+
+    # Akses admin
+    r_admin = client.get("/admin")
+    assert r_admin.status_code == 200
+    assert "CAVISA" in r_admin.text
+
+    # Akses static assets
+    r_css = client.get("/assets/css/style.css")
+    assert r_css.status_code == 200
+
+
 # ---------------------------------------------------------------------------
 # Skema Orange & Legacy Predict
 # ---------------------------------------------------------------------------
