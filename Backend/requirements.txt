@@ -1,0 +1,12 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.4
+
+# Feature extractor: SqueezeNet Orange (ndf) — murni numpy, tanpa torch.
+ndf==0.1.4
+scikit-learn==1.6.0
+joblib==1.4.2
+numpy==1.26.4
+Pillow==11.0.0
+gunicorn>=22.0.0

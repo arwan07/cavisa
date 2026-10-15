@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: cavisa-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Model terlatih di-persist di host
+      - ./Backend/app/models:/srv/app/models
+      # Dataset untuk retraining dari Admin Panel
+      - ./data_latih:/srv/data_latih
+      - ./data_validasi:/srv/data_validasi
+      - ./data_uji:/srv/data_uji
+      - ./data_asli:/srv/data_asli:ro
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=info
+      - CORS_ORIGINS=*
+      - ACTIVE_MODEL=mlp
+      - AUTO_TRAIN_BASELINE=true
+      - MAX_UPLOAD_MB=15
+      - MAX_BATCH_FILES=30
+
+  frontend:
+    image: nginx:alpine
+    container_name: cavisa-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./Frontend:/usr/share/nginx/html:ro
+      - ./Frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy

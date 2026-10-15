@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#2563eb" />
+<meta name="description" content="CAVISA - Sistem Klasifikasi Morfologi Sel Sperma Manusia" />
+<title>CAVISA · Klasifikasi Morfologi Sel Sperma</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#main">Lompat ke konten utama</a>
+
+<header class="appbar">
+  <div class="appbar__inner">
+    <div class="appbar__brand">
+      <span class="appbar__logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M4 16c6 0 9-3 9-8 0-2 1-3 3-3 2.5 0 4 1.6 4 3.6 0 3-3.6 5.4-8.5 5.4"/>
+          <circle cx="5.5" cy="17.5" r="1.6" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <div>
+        <h1 class="appbar__title">CAVISA</h1>
+        <p class="appbar__sub">Klasifikasi Morfologi Sel Sperma</p>
+      </div>
+    </div>
+    <nav class="appbar__nav" aria-label="Navigasi desktop">
+      <a href="#h-form" class="nav-link is-active">Input</a>
+      <a href="#h-upload" class="nav-link">Unggah</a>
+      <a href="#h-result" class="nav-link">Hasil</a>
+      <a href="#h-history" class="nav-link">Riwayat</a>
+    </nav>
+    <div class="appbar__actions">
+      <a href="admin.html" class="icon-btn" title="Buka Panel Admin (Pelatihan & Dataset)" aria-label="Buka Panel Admin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </a>
+      <button type="button" class="icon-btn" id="btnTheme" aria-label="Ganti tema terang/gelap" title="Tema">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>
+        </svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+  <!-- ============ FORMULIR ============ -->
+  <section class="card" aria-labelledby="h-form">
+    <div class="card__head">
+      <h2 class="card__title" id="h-form">Data Pemeriksaan</h2>
+      <span class="chip chip--req">Wajib diisi</span>
+    </div>
+
+    <form id="formData" novalidate>
+      <div class="field">
+        <label for="inpName">Nama Pengguna <span class="req">*</span></label>
+        <input type="text" id="inpName" name="nama" autocomplete="name" inputmode="text"
+               placeholder="cth. Renita DWI Marta" maxlength="60" required />
+        <p class="err" id="errName" role="alert" hidden></p>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="inpDate">Tanggal Pemeriksaan <span class="req">*</span></label>
+          <input type="date" id="inpDate" name="tanggal" required />
+          <p class="err" id="errDate" role="alert" hidden></p>
+        </div>
+        <div class="field">
+          <label for="inpSample">Kode Sampel</label>
+          <input type="text" id="inpSample" name="kode" placeholder="opsional" maxlength="24" />
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ UNGGAH CITRA ============ -->
+  <section class="card" aria-labelledby="h-upload">
+    <div class="card__head">
+      <h2 class="card__title" id="h-upload">Unggah Citra</h2>
+      <span class="chip">JPG · PNG · BMP</span>
+    </div>
+
+    <div class="dropzone" id="dropzone" tabindex="0" role="button"
+         aria-label="Pilih atau seret berkas citra ke sini">
+      <svg class="dropzone__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 16V4m0 0L8 8m4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+      </svg>
+      <p class="dropzone__title">Ketuk untuk pilih citra</p>
+      <p class="dropzone__hint">atau seret &amp; lepas di sini · maks. 10&nbsp;MB/berkas</p>
+      <input type="file" id="inpFile" accept="image/jpeg,image/jpg,image/png,image/bmp,image/x-ms-bmp,.jpg,.jpeg,.png,.bmp" multiple hidden />
+    </div>
+    <p class="err" id="errFile" role="alert" hidden></p>
+
+    <ul class="filelist" id="fileList" aria-live="polite"></ul>
+  </section>
+
+  <!-- ============ HASIL KLASIFIKASI ============ -->
+  <section class="card" aria-labelledby="h-result">
+    <div class="card__head">
+      <h2 class="card__title" id="h-result">Hasil Klasifikasi</h2>
+      <span class="chip chip--muted" id="modeChip">Mode demo</span>
+    </div>
+
+    <div id="resultArea" aria-live="polite">
+      <div class="empty" id="resultEmpty">
+        <div class="empty__ring" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/>
+          </svg>
+        </div>
+        <p class="empty__title">Belum ada hasil</p>
+        <p class="empty__hint">Isi data pengguna lalu unggah citra sperma untuk memulai klasifikasi.</p>
+      </div>
+
+      <div class="progress" id="resultLoading" hidden>
+        <div class="progress__bar"><span id="progressFill"></span></div>
+        <p class="progress__text" id="progressText">Menganalisis citra…</p>
+      </div>
+
+      <article class="result" id="resultCard" hidden>
+        <div class="result__top">
+          <figure class="result__thumb"><img id="resImg" alt="Pratinjau citra yang dianalisis" /></figure>
+          <div class="result__headline">
+            <span class="badge" id="resBadge">—</span>
+            <p class="result__confidence"><b id="resConf">—</b> tingkat keyakinan</p>
+            <p class="result__file" id="resFile">—</p>
+          </div>
+        </div>
+
+        <dl class="meta">
+          <div><dt>Nama Pengguna</dt><dd id="resName">—</dd></div>
+          <div><dt>Tanggal</dt><dd id="resDate">—</dd></div>
+          <div><dt>Kode Sampel</dt><dd id="resSample">—</dd></div>
+          <div><dt>Waktu Proses</dt><dd id="resTime">—</dd></div>
+        </dl>
+
+        <h3 class="result__sub">Kriteria Penilaian</h3>
+        <ul class="criteria" id="resCriteria"></ul>
+
+        <p class="result__note" id="resNote"></p>
+
+        <div class="result__actions">
+          <button type="button" class="btn btn--primary" id="btnReanalyze">Analisis Ulang</button>
+          <button type="button" class="btn btn--ghost" id="btnPrint">Cetak Hasil</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ RIWAYAT ============ -->
+  <section class="card" aria-labelledby="h-history">
+    <div class="card__head">
+      <h2 class="card__title" id="h-history">Riwayat Pemeriksaan</h2>
+      <span class="chip chip--muted" id="historyCount">0</span>
+    </div>
+
+    <div class="segbar" role="group" aria-label="Saring riwayat berdasarkan kelas">
+      <button type="button" class="seg is-active" data-filter="all">Semua</button>
+      <button type="button" class="seg" data-filter="normal">Normal</button>
+      <button type="button" class="seg" data-filter="abnormal">Abnormal</button>
+      <button type="button" class="seg" data-filter="nonsperm">Non-Sperm</button>
+    </div>
+
+    <ul class="history" id="historyList"></ul>
+    <p class="empty__hint" id="historyEmpty" hidden>Belum ada riwayat pemeriksaan.</p>
+
+    <div class="history__tools">
+      <button type="button" class="btn btn--ghost btn--sm" id="btnExport">Ekspor CSV</button>
+      <button type="button" class="btn btn--danger btn--sm" id="btnClear">Hapus Riwayat</button>
+    </div>
+  </section>
+
+  <p class="disclaimer">
+    Antarmuka demonstrasi. Hasil klasifikasi bukan pengganti penilaian laboratorium/medis
+    dan tidak boleh digunakan sebagai dasar diagnosis.
+  </p>
+</main>
+
+<nav class="tabbar" aria-label="Navigasi utama">
+  <a href="#h-form" class="tab is-active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+    <span>Input</span>
+  </a>
+  <a href="#h-upload" class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 16V4m0 0L8 8m4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+    <span>Unggah</span>
+  </a>
+  <a href="#h-result" class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+    <span>Hasil</span>
+  </a>
+  <a href="#h-history" class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 7.5V12l3 2"/></svg>
+    <span>Riwayat</span>
+  </a>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- ===== Modal konfirmasi ===== -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">Hapus seluruh riwayat?</h3>
+    <p>Tindakan ini tidak dapat dibatalkan.</p>
+    <div class="modal__actions">
+      <button type="button" class="btn btn--ghost" data-close>Batal</button>
+      <button type="button" class="btn btn--danger" id="btnConfirmClear">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

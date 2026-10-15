@@ -1,0 +1,18 @@
+.git
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.env
+Dockerfile
+.dockerignore
+README.md
+# Model besar tidak ikut ter-baked ke image; mount saat run.
+app/models/*.pkl
+app/models/*.joblib
+app/models/*.pt
+app/models/*.pth
